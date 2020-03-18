@@ -198,6 +198,11 @@ code {
     margin: 0 0.769230769230769%;
   }
 }
+.archive-article-header {
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 .archive-article-header a,
 .layout-wrap-inner.tag-cloud a,
 .timeline-row .content h1 a,
