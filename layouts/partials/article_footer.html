@@ -8,6 +8,7 @@
         {{with .Site.Data.l10n.articles.comments}}{{.}}{{end}}
     </a>
     {{end}}
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 
     <script>
     (function ($) {
@@ -37,14 +38,22 @@
                     return;
                 }
             } else {
+                //create qrcode
+                var typeNumber = 0;
+                var errorCorrectionLevel = 'M';
+                var qr = qrcode(typeNumber, errorCorrectionLevel);
+                qr.addData(url);
+                qr.make();
+
                 var html = [
                     '<div id="' + id + '" class="article-share-box">',
                         '<input class="article-share-input" value="' + url + '">',
+                        '<div id="qrcode-img-' + id + '" class="article-share-qrcode-img">' + qr.createSvgTag() + '</div>',
                         '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://twitter.com/share?url=' + encodedUrl + '&text=' + '{{ .Title }}' + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
                             '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
                             '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                            '<a href="https://service.weibo.com/share/share.php?&url=' + encodedUrl + '&title=' + '{{ .Title }}' +'searchPic=false' + '" class="fa fa-weibo article-share-weibo" target="_blank" title="Weibo"></a>',
                         '</div>',
                     '</div>'
                 ].join('');
@@ -52,6 +61,7 @@
               box = $(html);
 
               $('body').append(box);
+                
             }
 
             $('.article-share-box.on').hide();
@@ -72,5 +82,6 @@
             window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
         });
     })(jQuery);
+    
     </script>
 </footer>
